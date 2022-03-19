@@ -1,25 +1,19 @@
 #include "barriers.h"
 
-// I apologize for my complete lack of knowledge of C. I'm learning threading while writing this,
-// with my only 2 brain cells that survived midterms week.
-
 // general idea: counter notified when each thread arrives, spins for both exit & entry
 void central(pthread_t* threads, int n) {
-  int* counter = 0;
+  int counter = 0;
   for (int i=0; i<n; i++) {
-    pthread_create(&threads[i], NULL, sim_process, counter);
+    pthread_create(&threads[i], NULL, sim_process, &counter);
   }
   while (&counter < n) { }  // spin
 }
-
-// general idea: on round i, starting at 0, tell person i to the left that you’ve entered at barrier
 
 // simulate a process that takes a thread some amount of time
 void sim_process(void* counter) {
   int t = rand() % 10;
   sleep(1/t);
-  *((int*)result)++;  // this is probably really bad, just a placeholder until I figure out the right way
-  printf("%d\n", &counter);
+  // need a way to increment a shared counter. Don't know if this is possible, couldn't find an answer.
 }
 
 int main(int argc, char *argv[]) {
